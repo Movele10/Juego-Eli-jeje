@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
 <meta charset="UTF-8">
 <title>Juego</title>
+
 <style>
 body{
   background:black;
@@ -11,15 +12,20 @@ body{
   text-align:center;
   padding-top:60px;
 }
-input,button{
+
+input, button{
   padding:10px;
   margin-top:10px;
+  font-family:monospace;
 }
+
 input{
   background:black;
   border:1px solid #00ff99;
   color:#00ff99;
+  outline:none;
 }
+
 button{
   background:#00ff99;
   border:none;
@@ -27,24 +33,35 @@ button{
 }
 </style>
 </head>
+
 <body>
 
 <h1>👋 Hola Elizabeth</h1>
 
-<p>Este es un juego para ver tus capacidades,<br>a ver si lo descifras.</p>
+<p>
+Este es un juego para ver tus capacidades,<br>
+a ver si lo descifras.
+</p>
 
 <p>🔐 Escribe el nombre del creador (solo minúscula):</p>
 
-<input id="name">
+<input id="name" autocomplete="off">
 <br>
+
 <button onclick="check()">Entrar</button>
 
 <script>
 function check(){
-  const v = document.getElementById("name").value.trim().toLowerCase();
+
+  const input = document.getElementById("name").value;
+
+  const v = input
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, "");
 
   if(v === "evan"){
-    window.location.href="nivel1.html";
+    window.location.href = "nivel1.html";
   } else {
     alert("❌ Incorrecto");
   }
@@ -52,4 +69,4 @@ function check(){
 </script>
 
 </body>
-  </html>
+</html>
