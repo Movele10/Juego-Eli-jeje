@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Plane Survival PRO</title>
+<title>Plane Survival ENDLESS</title>
 
 <style>
 
@@ -15,7 +15,6 @@ body{
   color:#00ff99;
 }
 
-/* GAME */
 #game{
   position:relative;
   width:100vw;
@@ -55,7 +54,14 @@ body{
   left:10px;
 }
 
-/* ZONAS TOUCH */
+#winmsg{
+  position:absolute;
+  top:80px;
+  left:10px;
+  color:yellow;
+}
+
+/* TOUCH */
 .zone{
   position:absolute;
   top:0;
@@ -99,24 +105,19 @@ button{
 
 <h1>✈️ Cómo jugar</h1>
 
-<p>
-Mantén el avión lo más cerca del CENTRO posible.<br>
-Si se inclina demasiado o te golpean → pierdes estabilidad.
-</p>
-
-<p>
-⏱ Sobrevive 20 segundos para pasar el nivel.
-</p>
+<p>Mantén el avión estable y esquiva balas</p>
+<p>⏱ Llega a 20 segundos para ganar</p>
 
 <button onclick="startGame()">JUGAR</button>
 
 </div>
 
-<!-- JUEGO -->
+<!-- GAME -->
 <div id="game">
 
 <div id="info">Estabilidad: 100%</div>
 <div id="timer">⏱ 0 / 20s</div>
+<div id="winmsg"></div>
 
 <div id="plane">✈️</div>
 
@@ -133,25 +134,33 @@ let x = window.innerWidth/2;
 let center = window.innerWidth/2;
 let tilt = 0;
 let stability = 100;
+
 let time = 0;
+let won = false;
+
+let started = false;
+let bulletsEnabled = false;
 
 /* START */
 function startGame(){
   document.getElementById("tutorial").style.display="none";
   document.getElementById("game").style.display="block";
+
+  setTimeout(()=>started=true,3000);
+  setTimeout(()=>bulletsEnabled=true,2000);
 }
 
 /* TIMER */
 setInterval(()=>{
 
-  if(stability <= 0) return;
+  if(!started || stability <= 0) return;
 
   time += 0.1;
 
   document.getElementById("timer").innerText =
   "⏱ " + time.toFixed(1) + " / 20s";
 
-  if(time >= 20){
+  if(time >= 20 && !won){
     win();
   }
 
@@ -160,18 +169,18 @@ setInterval(()=>{
 /* MOVIMIENTO */
 function update(){
 
-  tilt += (Math.random()-0.5)*1.5;
+  if(!started) return;
 
+  center = window.innerWidth/2;
+
+  tilt += (Math.random()-0.5)*1.2;
   x += tilt;
-
   tilt *= 0.96;
 
-  // 🎯 objetivo: mantenerse cerca del centro
   let distCenter = Math.abs(x - center);
 
-  if(distCenter > 120){
-    stability -= 0.4;
-  }
+  if(distCenter > 180) stability -= 0.2;
+  if(x < 10 || x > window.innerWidth-10) stability -= 0.5;
 
   plane.style.left = x + "px";
   plane.style.transform = `translateX(-50%) rotate(${tilt*3}deg)`;
@@ -185,7 +194,7 @@ function update(){
 
 }
 
-setInterval(update, 20);
+setInterval(update,20);
 
 /* CONTROLES */
 document.getElementById("leftZone").addEventListener("touchstart",()=>{
@@ -196,7 +205,6 @@ document.getElementById("rightZone").addEventListener("touchstart",()=>{
   tilt += 3;
 });
 
-/* TECLADO */
 document.addEventListener("keydown",(e)=>{
   if(e.key==="ArrowLeft") tilt -= 3;
   if(e.key==="ArrowRight") tilt += 3;
@@ -217,10 +225,12 @@ function distance(a,b){
   return Math.sqrt((a.x-b.x)**2 + (a.y-b.y)**2);
 }
 
-/* 💣 MÁS BALAS */
+/* BALAS */
 function spawnBullet(){
 
-  for(let i=0;i<2;i++){ // 🔥 MÁS DENSIDAD
+  if(!bulletsEnabled) return;
+
+  for(let i=0;i<2;i++){
 
     let b = document.createElement("div");
     b.className = "bullet";
@@ -236,7 +246,7 @@ function spawnBullet(){
 
     let move = setInterval(()=>{
 
-      y += 7;
+      y += 6;
       b.style.top = y + "px";
 
       const p = planeHitbox();
@@ -256,19 +266,15 @@ function spawnBullet(){
   }
 }
 
-setInterval(spawnBullet, 500); // 🔥 MÁS FRECUENTE
+setInterval(spawnBullet,650);
 
-/* WIN */
+/* WIN (NO DETIENE EL JUEGO) */
 function win(){
 
-  document.body.innerHTML = `
-    <h1>sacate la lincencia de piloto enseguida carajooo</h1>
-    <p>20 segundos sobrevividos</p>
-  `;
+  won = true;
 
-  setTimeout(()=>{
-    window.location.href = "nivel7.html";
-  },2000);
+  document.getElementById("winmsg").innerText =
+  "Escapaste de Abelardo de la Espriella!(puedes seguir jugando)";
 
 }
 
@@ -276,12 +282,11 @@ function win(){
 function lose(){
 
   document.body.innerHTML = `
-    <h1>hiciste el 9/11!!! ✈️🏢🏢</h1>
+    <h1>Hiciste el 9|11!</h1>
+    <p>Reintentando...</p>
   `;
 
-  setTimeout(()=>{
-    location.reload();
-  },1500);
+  setTimeout(()=>location.reload(),1500);
 
 }
 
