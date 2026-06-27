@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Plane Survival RANDOM</title>
+<title>Plane Survival FIXED</title>
 
 <style>
 
@@ -128,6 +128,7 @@ button{
 
 <script>
 
+/* VARIABLES */
 let plane = document.getElementById("plane");
 
 let x = window.innerWidth/2;
@@ -137,9 +138,13 @@ let stability = 100;
 
 let time = 0;
 let won = false;
-
 let started = false;
-let bulletsEnabled = false;
+
+let gameOver = false;
+
+let spawnLoop;
+let moveLoop;
+let timerLoop;
 
 /* START */
 function startGame(){
@@ -151,9 +156,9 @@ function startGame(){
 }
 
 /* TIMER */
-setInterval(()=>{
+timerLoop = setInterval(()=>{
 
-  if(!started || stability <= 0) return;
+  if(!started || gameOver) return;
 
   time += 0.1;
 
@@ -169,7 +174,7 @@ setInterval(()=>{
 /* MOVIMIENTO */
 function update(){
 
-  if(!started) return;
+  if(!started || gameOver) return;
 
   center = window.innerWidth/2;
 
@@ -194,7 +199,7 @@ function update(){
 
 }
 
-setInterval(update,20);
+moveLoop = setInterval(update,20);
 
 /* CONTROLES */
 document.getElementById("leftZone").addEventListener("touchstart",()=>{
@@ -225,10 +230,10 @@ function distance(a,b){
   return Math.sqrt((a.x-b.x)**2 + (a.y-b.y)**2);
 }
 
-/* 💣 BALAS RANDOM */
+/* BALAS */
 function spawnBullet(){
 
-  if(!bulletsEnabled) return;
+  if(!started || gameOver) return;
 
   let b = document.createElement("div");
   b.className = "bullet";
@@ -259,6 +264,12 @@ function spawnBullet(){
 
   let move = setInterval(()=>{
 
+    if(gameOver) {
+      clearInterval(move);
+      b.remove();
+      return;
+    }
+
     y += 6;
     b.style.top = y + "px";
 
@@ -278,16 +289,23 @@ function spawnBullet(){
 
 }
 
-/* SPAWN CADA 400ms */
-setInterval(spawnBullet,400);
+/* SPAWN */
+spawnLoop = setInterval(spawnBullet,400);
 
 /* WIN */
 function win(){
 
+  if(gameOver) return;
+  gameOver = true;
+
   won = true;
 
+  clearInterval(timerLoop);
+  clearInterval(moveLoop);
+  clearInterval(spawnLoop);
+
   document.getElementById("winmsg").innerText =
-  "Escapaste de Abelardo de la espriella!";
+  "sacate el carnet y nos vamos de colombia 🗣️‼️🔥";
 
   setTimeout(()=>{
     window.location.href = "nivel7.html";
@@ -298,16 +316,24 @@ function win(){
 /* LOSE */
 function lose(){
 
+  if(gameOver) return;
+  gameOver = true;
+
+  clearInterval(timerLoop);
+  clearInterval(moveLoop);
+  clearInterval(spawnLoop);
+
   document.body.innerHTML = `
     <h1>Hiciste el 9/11!!! ✈️🏢🏢</h1>
-    <p>Reintentando...</p>
+    <p>Reiniciando...</p>
   `;
 
-  setTimeout(()=>location.reload(),1500);
-
+  setTimeout(()=>{
+    location.reload();
+  },1500);
 }
 
 </script>
 
 </body>
-</html>
+  </html>
