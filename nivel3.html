@@ -27,14 +27,10 @@ h2{
     word-break:break-word;
 }
 
-#texto{
-    font-size:16px;
-}
-
 input{
     margin-top:20px;
     padding:10px;
-    width:300px;
+    width:320px;
     background:black;
     color:#00ff99;
     border:1px solid #00ff99;
@@ -72,13 +68,9 @@ button:hover{
 
 <div id="box">
 <p id="texto">
-Kivkzizgv Vor, oz kilcrnz ez z xzvi xlnl fmz ylnyz
+kivkzizgv vor, oz kilcrnz ez z xzvi xlnl fmz ylnyz
 </p>
 </div>
-
-<button onclick="copiar()">📋 Copiar texto</button>
-
-<br>
 
 <input id="ans" placeholder="Escribe la traducción">
 
@@ -92,29 +84,23 @@ Kivkzizgv Vor, oz kilcrnz ez z xzvi xlnl fmz ylnyz
 
 <script>
 
-/* COPIAR */
-function copiar(){
-    navigator.clipboard.writeText(
-        document.getElementById("texto").textContent
-    );
-    alert("✅ Texto copiado");
-}
-
-/* NORMALIZACIÓN GLOBAL (ignora mayúsculas, espacios y signos) */
+/* NORMALIZACIÓN (anti errores) */
 function normalize(str){
     return str
         .toLowerCase()
         .trim()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g,"")
         .replace(/[.,;:¡!¿?]/g,"")
         .replace(/\s+/g," ");
 }
 
-/* VERIFICAR */
+/* CHECK FINAL */
 function check(){
 
     let respuesta = normalize(document.getElementById("ans").value);
 
-    let correcta = "Preparate Eli, la proxima va a caer como una bomba";
+    let correcta = normalize("preparate eli, la proxima va a caer como una bomba");
 
     if(respuesta === correcta){
 
@@ -134,7 +120,7 @@ function check(){
     }
 }
 
-/* ENTER = VERIFICAR */
+/* ENTER */
 document.getElementById("ans").addEventListener("keydown",function(e){
     if(e.key==="Enter"){
         check();
