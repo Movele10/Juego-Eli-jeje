@@ -51,7 +51,6 @@ button{
     cursor:pointer;
     font-family:monospace;
     font-weight:bold;
-    transition:.2s;
 }
 
 button:hover{
@@ -93,14 +92,15 @@ kvijyzhg vmor, oz kovbfnz gzmz xzotv czb yvmtz yfhv
 
 <script>
 
+/* COPIAR */
 function copiar(){
     navigator.clipboard.writeText(
         document.getElementById("texto").textContent
     );
-    alert("✅ ¡Texto copiado!");
+    alert("✅ Texto copiado");
 }
 
-/* NORMALIZACIÓN GLOBAL */
+/* NORMALIZACIÓN GLOBAL (ignora mayúsculas, espacios y signos) */
 function normalize(str){
     return str
         .toLowerCase()
@@ -109,6 +109,7 @@ function normalize(str){
         .replace(/\s+/g," ");
 }
 
+/* VERIFICAR */
 function check(){
 
     let respuesta = normalize(document.getElementById("ans").value);
@@ -129,10 +130,11 @@ function check(){
         },2000);
 
     }else{
-        alert("❌ Acceso denegado.\n\nIntenta descifrar el código... 🔐");
+        alert("❌ Incorrecto. Intenta de nuevo.");
     }
 }
 
+/* ENTER = VERIFICAR */
 document.getElementById("ans").addEventListener("keydown",function(e){
     if(e.key==="Enter"){
         check();
