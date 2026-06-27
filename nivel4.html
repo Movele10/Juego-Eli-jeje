@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Nivel 4</title>
+
+<style>
+body{
+    background:black;
+    color:#00ff99;
+    font-family:monospace;
+    text-align:center;
+    padding:40px;
+}
+
+h2{
+    margin-bottom:20px;
+}
+
+#terminal{
+    max-width:800px;
+    margin:auto;
+    text-align:left;
+    background:#111;
+    border:1px solid #00ff99;
+    padding:20px;
+    border-radius:8px;
+    min-height:200px;
+    white-space:pre-wrap;
+}
+
+button{
+    margin-top:20px;
+    padding:10px 18px;
+    background:#00ff99;
+    color:black;
+    border:none;
+    cursor:pointer;
+    font-family:monospace;
+    font-weight:bold;
+}
+</style>
+
+</head>
+
+<body>
+
+<h2>🔐 Nivel 4 - Acceso final</h2>
+
+<div id="terminal"></div>
+
+<button onclick="start()">Ver mensaje final</button>
+
+<script>
+
+const text = `
+... ACCEDIENDO SISTEMA FINAL ...
+
+Hola, Elizabeth.
+
+Supongo que ya entendiste el juego.
+
+Si llegaste hasta aquí, significa que seguiste cada pista,
+cada código y cada nivel sin rendirte.
+
+Y ahora sí...
+
+preparate Eli, la próxima va a caer como una bomba.
+
+No era solo un juego.
+
+Era una forma de decirlo.
+
+🤭
+
+Abriendo mensaje final...
+`;
+
+let i = 0;
+
+function type(){
+    if(i < text.length){
+        document.getElementById("terminal").innerHTML += text.charAt(i);
+        i++;
+        setTimeout(type, 30);
+    } else {
+        setTimeout(()=>{
+            window.location.href = "https://github.com/Movele10/Mensaje-lol";
+        },2000);
+    }
+}
+
+function start(){
+    document.getElementById("terminal").innerHTML = "";
+    i = 0;
+    type();
+}
+
+</script>
+
+</body>
+</html>
