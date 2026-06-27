@@ -72,7 +72,7 @@ button:hover{
 
 <div id="box">
 <p id="morse">
-.... --- .--. .- / . .-.. .. --.. .- -... . - .... --..-- / . ... .--. . .-. --- / --.- ..- . / ... .. / .-.. --- / .... .- --. .- ... / -.-. --- -. / - ..- / .. -. - . .-.. .. --. . -. -.-. .. .- / -.-- / -. --- / -.-. --- -. / ..- -. .- / .. .-!
+.... --- .-.. .- / . .-.. .. --.. .- -... . - .... --..-- / . ... .--. . .-. --- / --.- ..- . / ... .. / .-.. --- / .... .- --. .- ... / -.-. --- -. / - ..- / .. -. - . .-.. .. --. . -. -.-. .. .- / -.-- / -. --- / -.-. --- -. / ..- -. .- / .. .-!
 </p>
 </div>
 
@@ -92,12 +92,11 @@ button:hover{
 
 <script>
 
-/* COPIAR */
 function copiar(){
     navigator.clipboard.writeText(
         document.getElementById("morse").textContent
     );
-    alert("✅ Copiado");
+    alert("✅ Morse copiado");
 }
 
 /* NORMALIZACIÓN GLOBAL */
@@ -109,12 +108,11 @@ function normalize(str){
         .replace(/\s+/g," ");
 }
 
-/* VERIFICAR */
 function check(){
 
     let respuesta = normalize(document.getElementById("ans").value);
 
-    let correcta = "espero que si lo hagas con tu intelecto y no con una ia";
+    let correcta = "hola elizabeth, espero que si lo hagas con tu intelecto y no con una ia";
 
     if(respuesta === correcta){
 
@@ -134,7 +132,6 @@ function check(){
     }
 }
 
-/* ENTER = VERIFICAR */
 document.getElementById("ans").addEventListener("keydown",function(e){
     if(e.key==="Enter"){
         check();
