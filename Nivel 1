@@ -24,7 +24,7 @@ function check(){
   if(v === "hola elizabeth como te va sigue avanzando son 3 niveles"){
     window.location.href = "nivel2.html";
   } else {
-    alert("incorrecto");
+    alert("prueba de nuevo");
   }
 }
 </script>
