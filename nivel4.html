@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Nivel 4</title>
+
+<style>
+
+body{
+  margin:0;
+  background:black;
+  color:#00ff99;
+  font-family:monospace;
+  text-align:center;
+  padding:20px;
+  overflow:hidden;
+}
+
+h2{
+  margin-bottom:10px;
+}
+
+#box{
+  background:#111;
+  border:1px solid #00ff99;
+  padding:15px;
+  max-width:95%;
+  margin:auto;
+  border-radius:8px;
+  overflow-x:auto;
+  font-size:14px;
+}
+
+#eq{
+  white-space:nowrap;
+  display:inline-block;
+  text-align:left;
+}
+
+/* input */
+input{
+  margin-top:15px;
+  padding:10px;
+  width:80%;
+  max-width:300px;
+  background:black;
+  color:#00ff99;
+  border:1px solid #00ff99;
+  font-family:monospace;
+  font-size:18px;
+}
+
+button{
+  margin-top:15px;
+  padding:12px 18px;
+  background:#00ff99;
+  color:black;
+  border:none;
+  font-weight:bold;
+  cursor:pointer;
+  font-size:18px;
+}
+
+/* ☁ botón simplificar */
+#cloud{
+  margin-top:25px;
+  display:none;
+  background:red;
+  color:white;
+  padding:15px 25px;
+  border-radius:50px;
+  font-weight:bold;
+  cursor:pointer;
+  box-shadow:0 0 20px red;
+}
+
+/* 🪧 pista abajo */
+#banner{
+  position:fixed;
+  bottom:15px;
+  left:-120%;
+  background:#222;
+  border:1px solid #00ff99;
+  padding:10px 20px;
+  font-size:16px;
+  white-space:nowrap;
+}
+
+/* animación rápida */
+@keyframes moveBanner{
+  0%{left:-120%;}
+  100%{left:120%;}
+}
+
+/* 💬 tip */
+#tip{
+  position:fixed;
+  bottom:60px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#111;
+  border:1px solid #00ff99;
+  padding:8px 15px;
+  border-radius:10px;
+  font-size:14px;
+}
+
+/* 📌 toast */
+.toast{
+  position:fixed;
+  top:20px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#222;
+  color:#ff5555;
+  padding:10px 15px;
+  border:1px solid #ff5555;
+  border-radius:8px;
+  font-size:14px;
+  animation:fade 2s forwards;
+}
+
+@keyframes fade{
+  0%{opacity:0;}
+  10%{opacity:1;}
+  90%{opacity:1;}
+  100%{opacity:0;}
+}
+
+</style>
+</head>
+
+<body>
+
+<h2>🔐 Nivel 4 - Ecuación Caótica</h2>
+
+<div id="box">
+
+<div id="eq">
+(12x^9 + 8y^5 - 3z^7 + Σ + ∫ + Π + log(...) + 42 - 42)
+</div>
+
+</div>
+
+<div id="result"></div>
+
+<input id="ans" placeholder="Respuesta">
+
+<br>
+
+<button onclick="check()">Responder</button>
+
+<div id="cloud" onclick="simplify()">☁ SIMPLIFICAR</div>
+
+<div id="banner">💡 20 + 20 + 20 + 7</div>
+
+<div id="tip">💡 la 4 es la vencida</div>
+
+<script>
+
+let attempts = 0;
+let lastTry = 0;
+let simplifyUses = 0;
+
+/* pista animada */
+function simplify(){
+
+  if(simplifyUses >= 5){
+    showToast("⛔ ya usaste todas las pistas");
+    return;
+  }
+
+  simplifyUses++;
+
+  const banner = document.getElementById("banner");
+
+  banner.style.animation = "moveBanner 1.5s linear";
+
+  setTimeout(()=>{
+    banner.style.animation = "none";
+  },1500);
+}
+
+/* toast estilo copia */
+function showToast(msg){
+
+  const div = document.createElement("div");
+  div.className = "toast";
+  div.innerText = msg;
+
+  document.body.appendChild(div);
+
+  setTimeout(()=>{
+    div.remove();
+  },2000);
+}
+
+/* normalizar */
+function normalize(str){
+  return str.toLowerCase().trim().replace(/\s+/g,"");
+}
+
+function check(){
+
+  const now = Date.now();
+
+  if(now - lastTry < 5000){
+    showToast("⏳ espera 5 segundos...");
+    return;
+  }
+
+  lastTry = now;
+
+  const input = normalize(document.getElementById("ans").value);
+
+  if(input === "67"){
+
+    document.body.innerHTML = `
+      <h1 style="color:#00ff99;margin-top:100px;">
+        ✅ Correcto<br><br>
+        Accediendo al siguiente nivel...
+      </h1>
+    `;
+
+    setTimeout(()=>{
+      window.location.href = "nivel5.html";
+    },2000);
+
+    return;
+  }
+
+  attempts++;
+
+  showToast("❌ Incorrecto (" + attempts + ")");
+
+  if(attempts >= 3){
+    document.getElementById("cloud").style.display = "inline-block";
+  }
+}
+
+</script>
+
+</body>
+  </html>
