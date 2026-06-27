@@ -7,7 +7,7 @@
 <style>
 body{
     background:black;
-    color:#4c00ff;
+    color:#00ff99;
     font-family:monospace;
     text-align:center;
     padding:40px;
@@ -51,7 +51,6 @@ button{
     cursor:pointer;
     font-family:monospace;
     font-weight:bold;
-    transition:.2s;
 }
 
 button:hover{
@@ -73,7 +72,7 @@ button:hover{
 
 <div id="box">
 <p id="morse">
-.... --- .--. .- / . .-.. .. --.. .- -... . - .... --..-- / . ... .--. . .-. --- / --.- ..- . / ... .. / .-.. --- / .... .- --. .- ... / -.-. --- -. / - ..- / .. -. - . .-.. .. --. . -. -.-. .. .- / -.-- / -. --- / -.-. --- -. / ..- -. .- / .. .-!  
+.... --- .--. .- / . .-.. .. --.. .- -... . - .... --..-- / . ... .--. . .-. --- / --.- ..- . / ... .. / .-.. --- / .... .- --. .- ... / -.-. --- -. / - ..- / .. -. - . .-.. .. --. . -. -.-. .. .- / -.-- / -. --- / -.-. --- -. / ..- -. .- / .. .-!
 </p>
 </div>
 
@@ -93,11 +92,12 @@ button:hover{
 
 <script>
 
+/* COPIAR */
 function copiar(){
     navigator.clipboard.writeText(
         document.getElementById("morse").textContent
     );
-    alert("✅ ¡Morse copiado!");
+    alert("✅ Copiado");
 }
 
 /* NORMALIZACIÓN GLOBAL */
@@ -109,6 +109,7 @@ function normalize(str){
         .replace(/\s+/g," ");
 }
 
+/* VERIFICAR */
 function check(){
 
     let respuesta = normalize(document.getElementById("ans").value);
@@ -129,10 +130,11 @@ function check(){
         },2000);
 
     }else{
-        alert("❌ Acceso denegado.\n\nSigue intentando... 🔐");
+        alert("❌ Incorrecto. Intenta de nuevo.");
     }
 }
 
+/* ENTER = VERIFICAR */
 document.getElementById("ans").addEventListener("keydown",function(e){
     if(e.key==="Enter"){
         check();
