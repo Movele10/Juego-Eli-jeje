@@ -1,33 +1,138 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
 <meta charset="UTF-8">
 <title>Nivel 1</title>
+
+<style>
+body{
+    background:black;
+    color:#00ff99;
+    font-family:monospace;
+    text-align:center;
+    padding:40px;
+}
+
+h2{
+    margin-bottom:20px;
+}
+
+#box{
+    max-width:900px;
+    margin:auto;
+    overflow-x:auto;
+    white-space:nowrap;
+    background:#111;
+    border:1px solid #00ff99;
+    border-radius:8px;
+    padding:15px;
+}
+
+#binario{
+    display:inline-block;
+    font-size:14px;
+}
+
+input{
+    margin-top:20px;
+    padding:10px;
+    width:300px;
+    background:black;
+    color:#00ff99;
+    border:1px solid #00ff99;
+    font-family:monospace;
+    outline:none;
+}
+
+button{
+    margin-top:15px;
+    padding:10px 18px;
+    background:#00ff99;
+    color:black;
+    border:none;
+    cursor:pointer;
+    font-family:monospace;
+    font-weight:bold;
+    transition:.2s;
+}
+
+button:hover{
+    opacity:.85;
+}
+
+.pista{
+    margin-top:25px;
+    color:gray;
+    font-size:14px;
+}
+</style>
+
 </head>
 
-<body style="background:black;color:#00ff99;font-family:monospace;text-align:center;padding-top:50px">
+<body>
 
-<h2>Nivel 1 - Binario</h2>
+<h2>🔐 Nivel 1 - Binario</h2>
 
-<p style="max-width:800px;margin:auto">
+<div id="box">
+<div id="binario">
 01001000 01101111 01101100 01100001 00100000 01000101 01101100 01101001 01111010 01100001 01100010 01100101 01110100 01101000 00101100 00100000 01100011 01101111 01101101 01101111 00100000 01110100 01100101 00100000 01110110 01100001 00101100 00100000 01110011 01101001 01100111 01110101 01100101 00100000 01100001 01110110 01100001 01101110 01111010 01100001 01101110 01100100 01101111 00101100 00100000 01110011 01101111 01101110 00100000 00110011 00100000 01101110 01101001 01110110 01100101 01101100 01100101 01110011
+</div>
+</div>
+
+<button onclick="copiar()">📋 Copiar binario</button>
+
+<br>
+
+<input id="ans" placeholder="Escribe la traducción">
+
+<br>
+
+<button onclick="check()">Verificar</button>
+
+<p class="pista">
+💡 Vamos... nadie sabe binario de memoria. Usa el traductor. 🗣️‼️🔥
 </p>
 
-<input id="ans" placeholder="respuesta en texto">
-<br><br>
-<button onclick="check()">verificar</button>
-
 <script>
-function check(){
-  let v = document.getElementById("ans").value.trim().toLowerCase();
 
-  if(v === "hola elizabeth como te va sigue avanzando son 3 niveles"){
-    window.location.href = "nivel2.html";
-  } else {
-    alert("prueba de nuevo");
-  }
+function copiar(){
+    navigator.clipboard.writeText(
+        document.getElementById("binario").textContent
+    );
+    alert("✅ ¡Binario copiado!");
 }
-</script>
 
-</body>
-</html>
+/* 🔐 NORMALIZACIÓN GLOBAL DEL JUEGO */
+function normalize(str){
+    return str
+        .toLowerCase()
+        .trim()
+        .replace(/[.,;:¡!¿?]/g, "")  // ignora puntuación
+        .replace(/\s+/g," ");
+}
+
+function check(){
+
+    let respuesta = normalize(document.getElementById("ans").value);
+
+    let correcta = "hola elizabeth como te va sigue avanzando son 3 niveles";
+
+    if(respuesta === correcta){
+
+        document.body.innerHTML = `
+        <h1 style="color:#00ff99;font-family:monospace;margin-top:100px;">
+        ✅ Código descifrado...<br><br>
+        Acceso concedido. Abriendo siguiente nivel...
+        </h1>
+        `;
+
+        setTimeout(()=>{
+            window.location.href = "nivel2.html";
+        },2000);
+
+    }else{
+        alert("❌ Acceso denegado.\n\nParece que el código aún no ha sido descifrado... Inténtalo de nuevo. 🔐");
+    }
+}
+
+document.getElementById("ans").add
