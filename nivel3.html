@@ -1,1 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Nivel 3</title>
 
+<style>
+body{
+    background:black;
+    color:#00ff99;
+    font-family:monospace;
+    text-align:center;
+    padding:40px;
+}
+
+h2{
+    margin-bottom:20px;
+}
+
+#box{
+    max-width:900px;
+    margin:auto;
+    background:#111;
+    border:1px solid #00ff99;
+    border-radius:8px;
+    padding:15px;
+    word-break:break-word;
+}
+
+#texto{
+    font-size:16px;
+}
+
+input{
+    margin-top:20px;
+    padding:10px;
+    width:300px;
+    background:black;
+    color:#00ff99;
+    border:1px solid #00ff99;
+    font-family:monospace;
+    outline:none;
+}
+
+button{
+    margin-top:15px;
+    padding:10px 18px;
+    background:#00ff99;
+    color:black;
+    border:none;
+    cursor:pointer;
+    font-family:monospace;
+    font-weight:bold;
+    transition:.2s;
+}
+
+button:hover{
+    opacity:.85;
+}
+
+.pista{
+    margin-top:25px;
+    color:gray;
+    font-size:14px;
+}
+</style>
+
+</head>
+
+<body>
+
+<h2>🔐 Nivel 3 - Atbash</h2>
+
+<div id="box">
+<p id="texto">
+kvijyzhg vmor, oz kovbfnz gzmz xzotv czb yvmtz yfhv
+</p>
+</div>
+
+<button onclick="copiar()">📋 Copiar texto</button>
+
+<br>
+
+<input id="ans" placeholder="Escribe la traducción">
+
+<br>
+
+<button onclick="check()">Verificar</button>
+
+<p class="pista">
+💡 Vamos... usa el traductor. 🗣️‼️🔥
+</p>
+
+<script>
+
+function copiar(){
+    navigator.clipboard.writeText(
+        document.getElementById("texto").textContent
+    );
+    alert("✅ ¡Texto copiado!");
+}
+
+/* NORMALIZACIÓN GLOBAL */
+function normalize(str){
+    return str
+        .toLowerCase()
+        .trim()
+        .replace(/[.,;:¡!¿?]/g,"")
+        .replace(/\s+/g," ");
+}
+
+function check(){
+
+    let respuesta = normalize(document.getElementById("ans").value);
+
+    let correcta = "preparate eli la proxima va a caer como una bomba";
+
+    if(respuesta === correcta){
+
+        document.body.innerHTML = `
+        <h1 style="color:#00ff99;font-family:monospace;margin-top:100px;">
+        ✅ Código descifrado...<br><br>
+        Acceso concedido. Abriendo nivel 4...
+        </h1>
+        `;
+
+        setTimeout(()=>{
+            window.location.href = "nivel4.html";
+        },2000);
+
+    }else{
+        alert("❌ Acceso denegado.\n\nIntenta descifrar el código... 🔐");
+    }
+}
+
+document.getElementById("ans").addEventListener("keydown",function(e){
+    if(e.key==="Enter"){
+        check();
+    }
+});
+
+</script>
+
+</body>
+</html>
