@@ -90,25 +90,64 @@ button:hover{
 <button onclick="check()">Verificar</button>
 
 <p class="pista">
-💡 Vamos... nadie sabe binario de memoria. Usa el traductor. 🗣️‼️🔥
+💡 Vamos... usa el traductor. 🗣️‼️🔥
 </p>
 
 <script>
 
+/* COPIAR BINARIO */
 function copiar(){
     navigator.clipboard.writeText(
         document.getElementById("binario").textContent
     );
-    alert("✅ ¡Binario copiado!");
+    alert("✅ Binario copiado");
 }
 
-/* 🔐 NORMALIZACIÓN GLOBAL DEL JUEGO */
+/* NORMALIZACIÓN GLOBAL (ignora mayúsculas, espacios y signos) */
 function normalize(str){
     return str
         .toLowerCase()
         .trim()
-        .replace(/[.,;:¡!¿?]/g, "")  // ignora puntuación
+        .replace(/[.,;:¡!¿?]/g,"")
         .replace(/\s+/g," ");
+}
+
+/* VERIFICAR RESPUESTA */
+function check(){
+
+    let respuesta = normalize(document.getElementById("ans").value);
+
+    let correcta = "hola elizabeth como te va sigue avanzando son 3 niveles";
+
+    if(respuesta === correcta){
+
+        document.body.innerHTML = `
+        <h1 style="color:#00ff99;font-family:monospace;margin-top:100px;">
+        ✅ Código descifrado...<br><br>
+        Acceso concedido. Abriendo nivel 2...
+        </h1>
+        `;
+
+        setTimeout(()=>{
+            window.location.href = "nivel2.html";
+        },2000);
+
+    }else{
+        alert("❌ Incorrecto. Intenta de nuevo.");
+    }
+}
+
+/* ENTER = VERIFICAR */
+document.getElementById("ans").addEventListener("keydown",function(e){
+    if(e.key==="Enter"){
+        check();
+    }
+});
+
+</script>
+
+</body>
+</html>        .replace(/\s+/g," ");
 }
 
 function check(){
