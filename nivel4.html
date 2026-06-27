@@ -2,54 +2,75 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Nivel 4</title>
 
 <style>
+
 body{
     background:black;
     color:#00ff99;
     font-family:monospace;
+
+    font-size:20px;
+
+    margin:0;
+    padding:25px;
     text-align:center;
-    padding:40px;
 }
 
 h2{
     margin-bottom:20px;
+    font-size:1.4em;
 }
 
 #terminal{
-    max-width:800px;
+    max-width:850px;
     margin:auto;
     text-align:left;
     background:#111;
     border:1px solid #00ff99;
-    padding:20px;
+    padding:18px;
     border-radius:8px;
-    min-height:200px;
+
+    min-height:220px;
+
     white-space:pre-wrap;
+    word-wrap:break-word;
+
+    font-size:16px;
+    line-height:1.6;
 }
 
 button{
     margin-top:20px;
-    padding:10px 18px;
+    padding:12px 18px;
     background:#00ff99;
     color:black;
     border:none;
     cursor:pointer;
     font-family:monospace;
+    font-size:18px;
     font-weight:bold;
+    transition:.2s;
 }
+
+button:hover{
+    opacity:.85;
+}
+
 </style>
 
 </head>
 
 <body>
 
-<h2>🔐 Nivel 4 - Acceso final</h2>
+<h2>El ultimo nivel, ahora viene la "recompensa"</h2>
 
 <div id="terminal"></div>
 
-<button onclick="start()">Ver mensaje final</button>
+<button onclick="start()">▶ Ver mensaje final</button>
 
 <script>
 
@@ -65,24 +86,26 @@ cada código y cada nivel sin rendirte.
 
 Y ahora sí...
 
-preparate Eli, la próxima va a caer como una bomba.
+preparate Eli, este "juego" es porque no encontraba forma de hacerlo.
 
 No era solo un juego.
 
 Era una forma de decirlo.
 
-🤭
+uy que penaaaa
 
 Abriendo mensaje final...
 `;
 
 let i = 0;
+const terminal = document.getElementById("terminal");
 
 function type(){
+
     if(i < text.length){
-        document.getElementById("terminal").innerHTML += text.charAt(i);
+        terminal.innerHTML += text.charAt(i);
         i++;
-        setTimeout(type, 30);
+        setTimeout(type, 28);
     } else {
         setTimeout(()=>{
             window.location.href = "https://movele10.github.io/Mensaje-lol/";
@@ -91,7 +114,7 @@ function type(){
 }
 
 function start(){
-    document.getElementById("terminal").innerHTML = "";
+    terminal.innerHTML = "";
     i = 0;
     type();
 }
