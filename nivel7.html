@@ -66,11 +66,11 @@ button:hover{
 
 <body>
 
-<h2>El ultimo nivel, ahora viene la "recompensa"</h2>
+<h2>🔐 Nivel 4 - Acceso Final</h2>
 
 <div id="terminal"></div>
 
-<button onclick="start()">▶ Ver mensaje final</button>
+<button id="btn" onclick="start()">▶ Ver mensaje final</button>
 
 <script>
 
@@ -92,13 +92,17 @@ No era solo un juego.
 
 Era una forma de decirlo.
 
-uy que penaaaa
+🤭
 
 Abriendo mensaje final...
 `;
 
 let i = 0;
+let started = false;
+let finished = false;
+
 const terminal = document.getElementById("terminal");
+const btn = document.getElementById("btn");
 
 function type(){
 
@@ -107,16 +111,28 @@ function type(){
         i++;
         setTimeout(type, 28);
     } else {
-        setTimeout(()=>{
-            window.location.href = "https://movele10.github.io/Mensaje-lol/";
-        },2000);
+        finished = true;
+
+        // 💌 cambia el botón cuando termina
+        btn.innerText = "💌";
     }
 }
 
 function start(){
-    terminal.innerHTML = "";
-    i = 0;
-    type();
+
+    // 🔥 PRIMER CLICK: escribe el mensaje
+    if(!started){
+        started = true;
+        terminal.innerHTML = "";
+        i = 0;
+        type();
+        return;
+    }
+
+    // 💌 SEGUNDO CLICK: redirige
+    if(finished){
+        window.location.href = "https://movele10.github.io/Mensaje-lol/";
+    }
 }
 
 </script>
