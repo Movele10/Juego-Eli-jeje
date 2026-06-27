@@ -2,19 +2,27 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Nivel 1</title>
 
 <style>
+
 body{
     background:black;
     color:#00ff99;
     font-family:monospace;
+
+    font-size:20px;
+
+    margin:0;
+    padding:25px;
     text-align:center;
-    padding:40px;
 }
 
 h2{
     margin-bottom:20px;
+    font-size:1.4em;
 }
 
 #box{
@@ -30,28 +38,31 @@ h2{
 
 #binario{
     display:inline-block;
-    font-size:14px;
+    font-size:16px;
 }
 
 input{
     margin-top:20px;
-    padding:10px;
-    width:300px;
+    padding:12px;
+    width:85%;
+    max-width:320px;
     background:black;
     color:#00ff99;
     border:1px solid #00ff99;
     font-family:monospace;
+    font-size:18px;
     outline:none;
 }
 
 button{
     margin-top:15px;
-    padding:10px 18px;
+    padding:12px 18px;
     background:#00ff99;
     color:black;
     border:none;
     cursor:pointer;
     font-family:monospace;
+    font-size:18px;
     font-weight:bold;
     transition:.2s;
 }
@@ -65,13 +76,14 @@ button:hover{
     color:gray;
     font-size:14px;
 }
+
 </style>
 
 </head>
 
 <body>
 
-<h2>🔐 Nivel 1 - Binario</h2>
+<h2> El Nivel 1 es: Binario</h2>
 
 <div id="box">
 <div id="binario">
@@ -90,12 +102,12 @@ button:hover{
 <button onclick="check()">Verificar</button>
 
 <p class="pista">
-💡 Vamos... usa el traductor. 🗣️‼️🔥
+🗣️‼️🔥 Vamos... usa el traductor, no lo pienses tanto.
 </p>
 
 <script>
 
-/* COPIAR BINARIO */
+/* COPIAR */
 function copiar(){
     navigator.clipboard.writeText(
         document.getElementById("binario").textContent
@@ -103,7 +115,7 @@ function copiar(){
     alert("✅ Binario copiado");
 }
 
-/* NORMALIZACIÓN GLOBAL (ignora mayúsculas, espacios y signos) */
+/* NORMALIZAR */
 function normalize(str){
     return str
         .toLowerCase()
@@ -112,7 +124,7 @@ function normalize(str){
         .replace(/\s+/g," ");
 }
 
-/* VERIFICAR RESPUESTA */
+/* CHECK */
 function check(){
 
     let respuesta = normalize(document.getElementById("ans").value);
@@ -123,8 +135,8 @@ function check(){
 
         document.body.innerHTML = `
         <h1 style="color:#00ff99;font-family:monospace;margin-top:100px;">
-        ✅ Código descifrado...<br><br>
-        Acceso concedido. Abriendo nivel 2...
+        ✅ Nivel completado...<br><br>
+        Cargando Nivel 2...
         </h1>
         `;
 
@@ -132,12 +144,12 @@ function check(){
             window.location.href = "nivel2.html";
         },2000);
 
-    }else{
+    } else {
         alert("❌ Incorrecto. Intenta de nuevo.");
     }
 }
 
-/* ENTER = VERIFICAR */
+/* ENTER */
 document.getElementById("ans").addEventListener("keydown",function(e){
     if(e.key==="Enter"){
         check();
