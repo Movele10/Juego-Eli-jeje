@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Plane Survival ENDLESS</title>
+<title>Plane Survival RANDOM</title>
 
 <style>
 
@@ -61,7 +61,7 @@ body{
   color:yellow;
 }
 
-/* TOUCH */
+/* ZONAS */
 .zone{
   position:absolute;
   top:0;
@@ -106,7 +106,7 @@ button{
 <h1>✈️ Cómo jugar</h1>
 
 <p>Mantén el avión estable y esquiva balas</p>
-<p>⏱ Llega a 20 segundos para ganar</p>
+<p>⏱ Sobrevive 20 segundos</p>
 
 <button onclick="startGame()">JUGAR</button>
 
@@ -225,56 +225,73 @@ function distance(a,b){
   return Math.sqrt((a.x-b.x)**2 + (a.y-b.y)**2);
 }
 
-/* BALAS */
+/* 💣 BALAS RANDOM */
 function spawnBullet(){
 
   if(!bulletsEnabled) return;
 
-  for(let i=0;i<2;i++){
+  let b = document.createElement("div");
+  b.className = "bullet";
 
-    let b = document.createElement("div");
-    b.className = "bullet";
+  let w = window.innerWidth;
 
-    let bx = Math.random()*window.innerWidth;
+  let zone = Math.floor(Math.random()*3);
+  let bx;
 
-    b.style.left = bx + "px";
-    b.style.top = "0px";
-
-    document.getElementById("game").appendChild(b);
-
-    let y = 0;
-
-    let move = setInterval(()=>{
-
-      y += 6;
-      b.style.top = y + "px";
-
-      const p = planeHitbox();
-      const bu = bulletHitbox(b);
-
-      if(distance(p,bu) < 35){
-        lose();
-      }
-
-      if(y > window.innerHeight){
-        b.remove();
-        clearInterval(move);
-      }
-
-    },20);
-
+  if(zone === 0){
+    bx = w * 0.25;
+  } 
+  else if(zone === 1){
+    bx = w * 0.5;
+  } 
+  else{
+    bx = w * 0.75;
   }
+
+  bx += (Math.random()-0.5)*40;
+
+  b.style.left = bx + "px";
+  b.style.top = "0px";
+
+  document.getElementById("game").appendChild(b);
+
+  let y = 0;
+
+  let move = setInterval(()=>{
+
+    y += 6;
+    b.style.top = y + "px";
+
+    const p = planeHitbox();
+    const bu = bulletHitbox(b);
+
+    if(distance(p,bu) < 35){
+      lose();
+    }
+
+    if(y > window.innerHeight){
+      b.remove();
+      clearInterval(move);
+    }
+
+  },20);
+
 }
 
-setInterval(spawnBullet,650);
+/* SPAWN CADA 400ms */
+setInterval(spawnBullet,400);
 
-/* WIN (NO DETIENE EL JUEGO) */
+/* WIN */
 function win(){
 
   won = true;
 
   document.getElementById("winmsg").innerText =
-  "Escapaste de Abelardo de la Espriella!(puedes seguir jugando)";
+  "Escapaste de Abelardo de la espriella!";
+
+  setTimeout(()=>{
+    window.location.href = "nivel7.html";
+  },2000);
 
 }
 
@@ -282,7 +299,7 @@ function win(){
 function lose(){
 
   document.body.innerHTML = `
-    <h1>Hiciste el 9|11!</h1>
+    <h1>Hiciste el 9/11!!! ✈️🏢🏢</h1>
     <p>Reintentando...</p>
   `;
 
