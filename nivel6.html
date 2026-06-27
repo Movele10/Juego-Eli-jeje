@@ -1,661 +1,291 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Nivel 6 - Chef Hacker</title>
+<title>Plane Survival PRO</title>
 
 <style>
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
-
 body{
-
-background:#050505;
-
-color:#00ff99;
-
-font-family:monospace;
-
-overflow:hidden;
-
-user-select:none;
-
+  margin:0;
+  background:#000;
+  overflow:hidden;
+  font-family:monospace;
+  color:#00ff99;
 }
 
-h1{
-
-margin-top:20px;
-
-text-align:center;
-
-font-size:35px;
-
+/* GAME */
+#game{
+  position:relative;
+  width:100vw;
+  height:100vh;
+  background:linear-gradient(#000,#050515);
+  display:none;
 }
 
-#mensaje{
-
-text-align:center;
-
-margin-top:15px;
-
-font-size:18px;
-
-color:#8affc1;
-
+/* AVIÓN */
+#plane{
+  position:absolute;
+  font-size:40px;
+  left:50%;
+  top:65%;
+  transform:translateX(-50%);
 }
 
-#mesa{
-
-width:95%;
-
-height:82vh;
-
-margin:auto;
-
-margin-top:20px;
-
-background:#111;
-
-border:2px solid #00ff99;
-
-border-radius:20px;
-
-position:relative;
-
-overflow:hidden;
-
+/* BALAS */
+.bullet{
+  position:absolute;
+  width:10px;
+  height:10px;
+  background:red;
+  border-radius:50%;
 }
 
-/* INGREDIENTES */
-
-.item{
-
-position:absolute;
-
-width:90px;
-
-height:90px;
-
-background:#1d1d1d;
-
-border:2px solid #00ff99;
-
-border-radius:15px;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-font-size:45px;
-
-cursor:pointer;
-
-transition:.15s;
-
+/* UI */
+#info{
+  position:absolute;
+  top:10px;
+  left:10px;
 }
 
-.item:active{
-
-transform:scale(.95);
-
+#timer{
+  position:absolute;
+  top:40px;
+  left:10px;
 }
 
-#cebolla{
-
-left:40px;
-
-top:60px;
-
+/* ZONAS TOUCH */
+.zone{
+  position:absolute;
+  top:0;
+  width:50%;
+  height:100%;
 }
 
-#cuchillo{
+#leftZone{ left:0; }
+#rightZone{ right:0; }
 
-left:170px;
-
-top:60px;
-
-}
-
-#limon{
-
-left:300px;
-
-top:60px;
-
-}
-
-#camaron{
-
-left:430px;
-
-top:60px;
-
-}
-
-#salsa{
-
-left:560px;
-
-top:60px;
-
-}
-
-#cuchara{
-
-left:690px;
-
-top:60px;
-
-}
-
-/* VASO */
-
-#vaso{
-
-position:absolute;
-
-left:50%;
-
-bottom:35px;
-
-transform:translateX(-50%);
-
-width:170px;
-
-height:220px;
-
-border:4px solid #00ff99;
-
-border-top:none;
-
-border-radius:0 0 30px 30px;
-
-background:rgba(255,255,255,.04);
-
-display:flex;
-
-justify-content:flex-end;
-
-align-items:center;
-
-flex-direction:column;
-
-overflow:hidden;
-
-}
-
-#contenido{
-
-font-size:32px;
-
-padding-bottom:15px;
-
-}
-
-/* BOTONES */
-
-#panel{
-
-position:absolute;
-
-right:25px;
-
-bottom:25px;
-
-display:flex;
-
-flex-direction:column;
-
-gap:12px;
-
+/* TUTORIAL */
+#tutorial{
+  position:absolute;
+  width:100vw;
+  height:100vh;
+  background:#000;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:20px;
 }
 
 button{
-
-padding:12px;
-
-font-size:18px;
-
-font-family:monospace;
-
-font-weight:bold;
-
-background:#00ff99;
-
-color:black;
-
-border:none;
-
-border-radius:10px;
-
-cursor:pointer;
-
-}
-
-button:hover{
-
-opacity:.85;
-
-}
-
-/* ESTADO */
-
-#estado{
-
-position:absolute;
-
-left:20px;
-
-bottom:20px;
-
-font-size:18px;
-
-color:#9cffcb;
-
-}
-
-/* TOAST */
-
-#toast{
-
-position:fixed;
-
-top:20px;
-
-left:50%;
-
-transform:translateX(-50%);
-
-background:#151515;
-
-border:2px solid #00ff99;
-
-padding:12px 18px;
-
-border-radius:12px;
-
-display:none;
-
-z-index:999;
-
+  margin-top:20px;
+  padding:10px 20px;
+  background:#00ff99;
+  border:none;
+  font-weight:bold;
+  cursor:pointer;
 }
 
 </style>
-
 </head>
 
 <body>
 
-<h1>🍤 Nivel 6 - Chef Hacker</h1>
+<!-- TUTORIAL -->
+<div id="tutorial">
 
-<div id="mensaje">
+<h1>✈️ Cómo jugar</h1>
 
-ERROR...
+<p>
+Mantén el avión lo más cerca del CENTRO posible.<br>
+Si se inclina demasiado o te golpean → pierdes estabilidad.
+</p>
 
-El hacker encargado salió a almorzar.
+<p>
+⏱ Sobrevive 20 segundos para pasar el nivel.
+</p>
 
-<br><br>
-
-Mientras vuelve...
-
-<b>Prepara un cóctel de camarón.</b>
-
-</div>
-
-<div id="toast"></div>
-
-<div id="mesa">
-
-<div class="item" id="cebolla">🧅</div>
-
-<div class="item" id="cuchillo">🔪</div>
-
-<div class="item" id="limon">🍋</div>
-
-<div class="item" id="camaron">🍤</div>
-
-<div class="item" id="salsa">🍅</div>
-
-<div class="item" id="cuchara">🥄</div>
-
-<div id="vaso">
-
-<div id="contenido">
-
-🥤
+<button onclick="startGame()">JUGAR</button>
 
 </div>
 
-</div>
+<!-- JUEGO -->
+<div id="game">
 
-<div id="panel">
+<div id="info">Estabilidad: 100%</div>
+<div id="timer">⏱ 0 / 20s</div>
 
-<button id="reiniciar">🔄 Reiniciar</button>
+<div id="plane">✈️</div>
 
-<button id="reversar">↩ Reversar</button>
-
-</div>
-
-<div id="estado">
-
-Esperando la primera acción...
-
-</div>
+<div id="leftZone" class="zone"></div>
+<div id="rightZone" class="zone"></div>
 
 </div>
 
 <script>
 
-const estado=document.getElementById("estado");
+let plane = document.getElementById("plane");
 
-const toast=document.getElementById("toast");
+let x = window.innerWidth/2;
+let center = window.innerWidth/2;
+let tilt = 0;
+let stability = 100;
+let time = 0;
 
-const contenido=document.getElementById("contenido");
+/* START */
+function startGame(){
+  document.getElementById("tutorial").style.display="none";
+  document.getElementById("game").style.display="block";
+}
 
-const vaso=document.getElementById("vaso");
+/* TIMER */
+setInterval(()=>{
 
-const historial=[];
+  if(stability <= 0) return;
 
-let receta=[];
+  time += 0.1;
 
-let cebollaCortada=false;
+  document.getElementById("timer").innerText =
+  "⏱ " + time.toFixed(1) + " / 20s";
 
-let limonExprimido=false;
+  if(time >= 20){
+    win();
+  }
 
-let mezclado=false;
+},100);
 
-let seleccionado=null;
+/* MOVIMIENTO */
+function update(){
 
-function mensaje(txt){
+  tilt += (Math.random()-0.5)*1.5;
 
-toast.innerText=txt;
+  x += tilt;
 
-toast.style.display="block";
+  tilt *= 0.96;
 
-clearTimeout(window.toastTimer);
+  // 🎯 objetivo: mantenerse cerca del centro
+  let distCenter = Math.abs(x - center);
 
-window.toastTimer=setTimeout(()=>{
+  if(distCenter > 120){
+    stability -= 0.4;
+  }
 
-toast.style.display="none";
+  plane.style.left = x + "px";
+  plane.style.transform = `translateX(-50%) rotate(${tilt*3}deg)`;
 
-},1800);
+  document.getElementById("info").innerText =
+  "Estabilidad: " + Math.floor(stability) + "%";
+
+  if(stability <= 0){
+    lose();
+  }
 
 }
 
-function actualizarEstado(txt){
+setInterval(update, 20);
 
-estado.innerText=txt;
-
-}// ===============================
-// 🍤 NIVEL 6 - PARTE 2
-// LÓGICA DE INTERACCIÓN
-// ===============================
-
-// registrar elementos
-const items = document.querySelectorAll(".item");
-
-// estado de ingredientes en vaso
-let pasos = [];
-
-// ===============================
-// 👆 SELECCIÓN / TOUCH / CLICK
-// ===============================
-
-items.forEach(item => {
-
-  item.addEventListener("click", () => {
-    seleccionar(item.id);
-  });
-
-  // soporte móvil (drag simple)
-  item.addEventListener("touchstart", (e) => {
-    e.preventDefault();
-    seleccionar(item.id);
-  });
-
+/* CONTROLES */
+document.getElementById("leftZone").addEventListener("touchstart",()=>{
+  tilt -= 3;
 });
 
-// ===============================
-// 🎯 SELECCIONAR ITEM
-// ===============================
-
-function seleccionar(id){
-
-  seleccionado = id;
-
-  mensaje("Seleccionaste: " + id + " → toca el vaso");
-
-}
-
-// ===============================
-// 🥤 VASO CLICK
-// ===============================
-
-vaso.addEventListener("click", () => {
-
-  if(!seleccionado){
-    mensaje("Selecciona un ingrediente primero");
-    return;
-  }
-
-  agregarAlVaso(seleccionado);
-
-  seleccionado = null;
-
+document.getElementById("rightZone").addEventListener("touchstart",()=>{
+  tilt += 3;
 });
 
-// ===============================
-// ➕ AGREGAR AL VASO
-// ===============================
-
-function agregarAlVaso(id){
-
-  historial.push([...pasos]); // guardar estado previo
-
-  pasos.push(id);
-
-  actualizarVaso();
-
-  mensaje("Agregado: " + id);
-
-  actualizarEstado("Ingredientes: " + pasos.length);
-
-}
-
-// ===============================
-// 🥤 ACTUALIZAR VASO
-// ===============================
-
-function actualizarVaso(){
-
-  let display = "";
-
-  if(pasos.includes("camaron")) display += "🍤";
-  if(pasos.includes("cebolla")) display += "🧅";
-  if(pasos.includes("limon")) display += "🍋";
-  if(pasos.includes("salsa")) display += "🍅";
-  if(pasos.includes("cuchara")) display += "🥄";
-
-  contenido.innerText = "🥤\n" + display;
-
-}
-
-// ===============================
-// 🔄 REINICIAR
-// ===============================
-
-document.getElementById("reiniciar").onclick = () => {
-
-  pasos = [];
-  historial.length = 0;
-  seleccionado = null;
-
-  actualizarVaso();
-
-  mensaje("🔄 Reiniciado");
-
-  actualizarEstado("Esperando la primera acción...");
-
-};
-
-// ===============================
-// ↩ REVERSAR
-// ===============================
-
-document.getElementById("reversar").onclick = () => {
-
-  if(historial.length === 0){
-    mensaje("No hay acciones para revertir");
-    return;
-  }
-
-  pasos = historial.pop();
-
-  actualizarVaso();
-
-  mensaje("↩ Acción revertida");
-
-  actualizarEstado("Ingredientes: " + pasos.length);
-
-};
-// ===============================
-// 🍤 PARTE 3 - REGLAS DEL JUEGO
-// ===============================
-
-// orden esperado de receta (simplificado)
-const recetaCorrecta = [
-  "cebolla",
-  "limon",
-  "camaron",
-  "salsa",
-  "cuchara"
-];
-
-let pasoActual = 0;
-
-// ===============================
-// 🔪 ACCIONES ESPECIALES
-// ===============================
-
-// interceptar clicks de ingredientes otra vez (lógica extra)
-items.forEach(item => {
-
-  item.addEventListener("dblclick", () => {
-    usarHerramienta(item.id);
-  });
-
+/* TECLADO */
+document.addEventListener("keydown",(e)=>{
+  if(e.key==="ArrowLeft") tilt -= 3;
+  if(e.key==="ArrowRight") tilt += 3;
 });
 
-// ===============================
-// ⚙️ USAR HERRAMIENTA
-// ===============================
-
-function usarHerramienta(id){
-
-  if(id === "cuchillo"){
-
-    cebollaCortada = true;
-    mensaje("Cebolla lista para usar");
-
-  }
-
-  if(id === "limon"){
-
-    if(!limonExprimido){
-      limonExprimido = true;
-      mensaje("Limón exprimido");
-    }
-
-  }
-
+/* HITBOX */
+function planeHitbox(){
+  const r = plane.getBoundingClientRect();
+  return { x:r.left+r.width/2, y:r.top+r.height/2 };
 }
 
-// ===============================
-// 🥤 VALIDAR ORDEN
-// ===============================
-
-function validarPaso(id){
-
-  if(id !== recetaCorrecta[pasoActual]){
-
-    mensaje("❌ Orden incorrecto");
-
-    actualizarEstado("Error en la receta...");
-
-    return false;
-
-  }
-
-  pasoActual++;
-
-  return true;
-
+function bulletHitbox(b){
+  const r = b.getBoundingClientRect();
+  return { x:r.left+r.width/2, y:r.top+r.height/2 };
 }
 
-// ===============================
-// ➕ MODIFICAR AGREGAR AL VASO
-// (sobrescribimos lógica Parte 2)
-// ===============================
+function distance(a,b){
+  return Math.sqrt((a.x-b.x)**2 + (a.y-b.y)**2);
+}
 
-const oldAgregar = agregarAlVaso;
+/* 💣 MÁS BALAS */
+function spawnBullet(){
 
-agregarAlVaso = function(id){
+  for(let i=0;i<2;i++){ // 🔥 MÁS DENSIDAD
 
-  // reglas especiales
-  if(id === "cebolla" && !cebollaCortada){
-    mensaje(" Necesitas cortar la cebolla primero");
-    return;
+    let b = document.createElement("div");
+    b.className = "bullet";
+
+    let bx = Math.random()*window.innerWidth;
+
+    b.style.left = bx + "px";
+    b.style.top = "0px";
+
+    document.getElementById("game").appendChild(b);
+
+    let y = 0;
+
+    let move = setInterval(()=>{
+
+      y += 7;
+      b.style.top = y + "px";
+
+      const p = planeHitbox();
+      const bu = bulletHitbox(b);
+
+      if(distance(p,bu) < 35){
+        lose();
+      }
+
+      if(y > window.innerHeight){
+        b.remove();
+        clearInterval(move);
+      }
+
+    },20);
+
   }
+}
 
-  if(!validarPaso(id)){
-    return;
-  }
+setInterval(spawnBullet, 500); // 🔥 MÁS FRECUENTE
 
-  historial.push([...pasos]);
-
-  pasos.push(id);
-
-  actualizarVaso();
-
-  mensaje("✔ " + id + " agregado");
-
-  actualizarEstado("Paso " + pasoActual + "/5");
-
-  // victoria
-  if(pasoActual >= recetaCorrecta.length){
-    setTimeout(victoria, 800);
-  }
-
-};
-
-// ===============================
-// 🎉 VICTORIA
-// ===============================
-
-function victoria(){
+/* WIN */
+function win(){
 
   document.body.innerHTML = `
-    <div style="color:#00ff99;text-align:center;margin-top:100px;font-family:monospace;">
-      🍤 CÓCTEL COMPLETADO<br><br>
-      ✔ Receta correcta<br>
-      ✔ Sistema hackeado culinario<br><br>
-      <b>Acceso al Nivel 7 desbloqueado</b>
-    </div>
+    <h1>sacate la lincencia de piloto enseguida carajooo</h1>
+    <p>20 segundos sobrevividos</p>
   `;
 
-  setTimeout(() => {
+  setTimeout(()=>{
     window.location.href = "nivel7.html";
-  }, 2500);
+  },2000);
 
-  }
+}
+
+/* LOSE */
+function lose(){
+
+  document.body.innerHTML = `
+    <h1>hiciste el 9/11!!! ✈️🏢🏢</h1>
+  `;
+
+  setTimeout(()=>{
+    location.reload();
+  },1500);
+
+}
+
+</script>
+
+</body>
+</html>
