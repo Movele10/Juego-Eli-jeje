@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Nivel Rocas y Bombas</title>
+
+<style>
+
+body{
+  margin:0;
+  background:black;
+  color:#00ff99;
+  font-family:monospace;
+  overflow:hidden;
+  text-align:center;
+}
+
+h2{
+  margin-top:15px;
+}
+
+#contador{
+  font-size:20px;
+  margin:10px;
+}
+
+/* objetos */
+.roca, .bomba{
+  position:absolute;
+  width:65px;
+  height:65px;
+}
+
+/* 🪨 roca */
+.roca{
+  background:#666;
+  clip-path: polygon(
+    20% 0%, 80% 10%, 100% 40%, 85% 90%,
+    50% 100%, 10% 85%, 0% 40%
+  );
+  box-shadow:0 0 10px #222;
+}
+
+/* 💣 bomba */
+.bomba{
+  background:#ff0033;
+  border-radius:50%;
+  box-shadow:0 0 12px red;
+}
+
+/* game over opcional */
+#gameover{
+  display:none;
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  font-size:26px;
+  color:red;
+}
+
+</style>
+</head>
+
+<body>
+
+<h2> Rompe las 10 rocas sin tocar las bombas 😼</h2>
+<div id="contador">0 / 10</div>
+
+<script>
+
+let count = 0;
+const total = 10;
+let gameActive = true;
+
+/* 💥 reinicio */
+function resetGame(){
+
+  gameActive = false;
+
+  document.body.innerHTML = `
+    <h1 style="color:red;font-family:monospace;margin-top:100px;">
+       kaboom kaboom 🔥🔥🔥‼️😢🔫<br><br>
+      Reiniciando...
+    </h1>
+  `;
+
+  setTimeout(()=>{
+    location.reload();
+  },2000);
+}
+
+/* movimiento base */
+function moveObject(el, speed){
+
+  let x = Math.random() * (window.innerWidth - 80);
+  let y = Math.random() * (window.innerHeight - 150);
+
+  let vx = (Math.random() * speed + 2) * (Math.random() > 0.5 ? 1 : -1);
+  let vy = (Math.random() * speed + 2) * (Math.random() > 0.5 ? 1 : -1);
+
+  function move(){
+
+    if(!gameActive) return;
+
+    x += vx;
+    y += vy;
+
+    if(x <= 0 || x >= window.innerWidth - 70) vx *= -1;
+    if(y <= 0 || y >= window.innerHeight - 70) vy *= -1;
+
+    el.style.left = x + "px";
+    el.style.top = y + "px";
+
+    requestAnimationFrame(move);
+  }
+
+  move();
+}
+
+/* 🪨 rocas */
+function crearRoca(){
+
+  const roca = document.createElement("div");
+  roca.classList.add("roca");
+
+  roca.onclick = () => {
+
+    if(!gameActive) return;
+
+    roca.remove();
+    count++;
+
+    document.getElementById("contador").innerText = count + " / " + total;
+
+    if(count >= total){
+      gameActive = false;
+
+      document.body.innerHTML = `
+        <h1 style="color:#00ff99;margin-top:100px;">
+          ✅ Nivel completado
+        </h1>
+      `;
+
+      setTimeout(()=>{
+        window.location.href = "nivel6.html";
+      },2000);
+    }
+  };
+
+  document.body.appendChild(roca);
+
+  moveObject(roca, 4); // 🪨 velocidad balanceada
+}
+
+/* 💣 bombas (POCAS) */
+function crearBomba(){
+
+  const bomba = document.createElement("div");
+  bomba.classList.add("bomba");
+
+  bomba.onclick = () => {
+    resetGame();
+  };
+
+  document.body.appendChild(bomba);
+
+  moveObject(bomba, 5); // 💣 velocidad un poco mayor
+}
+
+/* 🪨 10 rocas */
+for(let i=0;i<10;i++){
+  setTimeout(crearRoca, i * 300);
+}
+
+/* 💣 SOLO 4 BOMBAS */
+for(let i=0;i<4;i++){
+  setTimeout(crearBomba, i * 700);
+}
+
+</script>
+
+</body>
+</html>
