@@ -147,31 +147,4 @@ document.getElementById("ans").addEventListener("keydown",function(e){
 </script>
 
 </body>
-</html>        .replace(/\s+/g," ");
-}
-
-function check(){
-
-    let respuesta = normalize(document.getElementById("ans").value);
-
-    let correcta = "hola elizabeth como te va sigue avanzando son 3 niveles";
-
-    if(respuesta === correcta){
-
-        document.body.innerHTML = `
-        <h1 style="color:#00ff99;font-family:monospace;margin-top:100px;">
-        ✅ Código descifrado...<br><br>
-        Acceso concedido. Abriendo siguiente nivel...
-        </h1>
-        `;
-
-        setTimeout(()=>{
-            window.location.href = "nivel2.html";
-        },2000);
-
-    }else{
-        alert("❌ Acceso denegado.\n\nParece que el código aún no ha sido descifrado... Inténtalo de nuevo. 🔐");
-    }
-}
-
-document.getElementById("ans").add
+</html>
